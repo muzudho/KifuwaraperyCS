@@ -39,14 +39,7 @@ internal static class MuzInfrastructure
         var host = builder.Build();
 
         // ［設定ファイル］から［Serilog］の本設定。
-        var options = new ConfigurationReaderOptions
-        {
-            SectionName = "CustomLogging:Serilog"  // ← ここでセクションを指定！
-        };
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration, options)  // ← これで Serilog セクション全部読み込む！
-            .Enrich.FromLogContext()  // 任意: 便利な enricher
-            .CreateLogger();
+        MuzLogging.SetupFromConfigurationFile(builder);
 
         // ［設定ファイル］のテスト出力
         var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;

@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Settings.Configuration;
 
 /// <summary>
 ///     <pre>
@@ -47,5 +48,21 @@ internal static class MuzLogging
             .WriteTo.Console()
             .WriteTo.File("logs/app-.log", rollingInterval: RollingInterval.Day)
             .CreateLogger());
+    }
+
+
+    /// <summary>
+    /// ［設定ファイル］からロガーの設定を行う。
+    /// </summary>
+    public static void SetupFromConfigurationFile(HostApplicationBuilder builder)
+    {
+        var options = new ConfigurationReaderOptions
+        {
+            SectionName = "CustomLogging:Serilog"  // ← ここでセクションを指定！
+        };
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration, options)  // ← これで Serilog セクション全部読み込む！
+            .Enrich.FromLogContext()  // 任意: 便利な enricher
+            .CreateLogger();
     }
 }
