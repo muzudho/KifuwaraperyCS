@@ -1,9 +1,11 @@
 ﻿namespace KifuwaraperyCS.Infrastructure;
 
+using KifuwaraperyCS.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 internal static class MuzInfrastructure
@@ -36,6 +38,9 @@ internal static class MuzInfrastructure
             .WriteTo.File("logs/app-.log", rollingInterval: RollingInterval.Day)
             .CreateLogger());
 
+        // ここで DI コンテナにサービスを登録（＾～＾）
+        builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // 設定を MuzAppSettings クラスにバインド
+
         // 自分のサービスを登録（例）
         //builder.Services.AddSingleton<IMyService, MyService>();
         //builder.Services.AddTransient<SomeOtherService>();
@@ -43,10 +48,10 @@ internal static class MuzInfrastructure
         var host = builder.Build();
 
         // ［設定ファイル］のテスト出力
-        var config = host.Services.GetRequiredService<IConfiguration>();
-        Console.WriteLine($"AppName: {config["AppName"]}");
-        Console.WriteLine($"ShogiEngineName: {config["ShogiEngineName"]}");
-        Console.WriteLine($"LogLevel: {config["LogLevel"]}");
+        var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
+        Console.WriteLine($"AppName: {appSettings.AppName}");
+        Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
+        Console.WriteLine($"LogLevel: {appSettings.LogLevel}");
 
         return host;
     }
