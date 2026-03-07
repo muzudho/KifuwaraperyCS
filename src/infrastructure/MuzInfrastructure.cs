@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.infrastructure;
+﻿namespace KifuwaraperyCS.src.infrastructure;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
