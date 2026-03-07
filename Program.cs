@@ -3,5 +3,7 @@ using KifuwaraperyCS.infrastructure;
 
 Console.WriteLine("Hello, World!");
 
-// ロギングの設定
-MuzLogging.Setup();
+// プログラムの初期化（＾～＾）
+MuzInfrastructure.InitializeProgram(args);
+
+Console.WriteLine("どやさ（＾～＾）！");
