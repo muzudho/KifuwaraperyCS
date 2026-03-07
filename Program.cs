@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using KifuwaraperyCS.Src.Infrastructure;
+using KifuwaraperyCS.Infrastructure;
 using Serilog;
 
 try
