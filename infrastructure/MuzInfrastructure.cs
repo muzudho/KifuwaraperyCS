@@ -44,6 +44,8 @@ internal static class MuzInfrastructure
             // または IHostedService で長時間動かすアプリなら
             // await host.RunAsync();
 
+            Log.Information("アプリが正常に起動しました！");
+
             Console.WriteLine("アプリ終了！ Enter押してね");
             Console.ReadLine();
         }
