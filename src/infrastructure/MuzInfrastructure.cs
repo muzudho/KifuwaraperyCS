@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
+using Serilog.Settings.Configuration;
 
 internal static class MuzInfrastructure
 {
@@ -15,7 +16,7 @@ internal static class MuzInfrastructure
     /// </summary>
     public static IHost InitializeProgram(string[] args)
     {
-        // Serilog を先にセットアップ（ホストビルド前に推奨）
+        // Serilog のデフォルト状態を先にセットアップ（ホストビルド前に推奨）
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .WriteTo.Console()
@@ -47,11 +48,20 @@ internal static class MuzInfrastructure
 
         var host = builder.Build();
 
+        // ［設定ファイル］から［Serilog］の本設定。
+        var options = new ConfigurationReaderOptions
+        {
+            SectionName = "CustomLogging:Serilog"  // ← ここでセクションを指定！
+        };
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration, options)  // ← これで Serilog セクション全部読み込む！
+            .Enrich.FromLogContext()  // 任意: 便利な enricher
+            .CreateLogger();
+
         // ［設定ファイル］のテスト出力
         var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
         Console.WriteLine($"AppName: {appSettings.AppName}");
         Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
-        Console.WriteLine($"LogLevel: {appSettings.LogLevel}");
 
         return host;
     }

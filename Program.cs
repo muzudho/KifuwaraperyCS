@@ -16,7 +16,7 @@ try
     // または IHostedService で長時間動かすアプリなら
     // await host.RunAsync();
 
-    Log.Information("アプリが正常に起動しました！");
+    Log.Information("ログを書き込むぜ～（＾～＾）！");
 
     Console.WriteLine("アプリ終了！ Enter押してね");
     Console.ReadLine();
