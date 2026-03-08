@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 using Serilog.Settings.Configuration;
 
 /// <summary>
@@ -26,8 +27,13 @@ internal static class MuzLogging
         // Serilog のデフォルト状態を先にセットアップ（ホストビルド前に推奨）
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.File("logs/app-.log", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(
+                "Logs/App-.log",
+                rollingInterval: RollingInterval.Day,
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .CreateBootstrapLogger();  // ホストビルド中のログ用
     }
 
@@ -42,12 +48,15 @@ internal static class MuzLogging
     /// <param name="builder"></param>
     public static void BridgeSerilogToILogger(HostApplicationBuilder builder)
     {
-        builder.Logging.ClearProviders();
-        builder.Logging.AddSerilog(new LoggerConfiguration()
-            .MinimumLevel.Information()
-            .WriteTo.Console()
-            .WriteTo.File("logs/app-.log", rollingInterval: RollingInterval.Day)
-            .CreateLogger());
+        builder.Services.AddSerilog();
+
+        // 細かく制御したい場合は、ILoggerFactory を直接設定することもできる（＾～＾）！
+        //builder.Logging.ClearProviders();
+        //builder.Logging.AddSerilog(new LoggerConfiguration()
+        //    .MinimumLevel.Information()
+        //    .WriteTo.Console()
+        //    .WriteTo.File("Logs/App-.log", rollingInterval: RollingInterval.Day)
+        //    .CreateLogger());
     }
 
 
