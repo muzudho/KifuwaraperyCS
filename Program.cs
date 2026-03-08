@@ -15,9 +15,11 @@ try
     await MuzInfrastructure.ActivateConfigurationAsync(
         args: args,
         builder: builder,
-        onConfigurationEnable: async (builder, host) =>
+        onConfigurationEnable: async (builder) =>
         {
             // ここから［設定ファイル］を使える（＾～＾）！
+
+            var host = builder.Build();
 
             // ［設定ファイル］のテスト出力
             var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;

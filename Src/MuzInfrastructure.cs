@@ -13,7 +13,7 @@ internal static class MuzInfrastructure
     public static async Task ActivateConfigurationAsync(
         string[] args,
         HostApplicationBuilder builder,
-        Func<HostApplicationBuilder, IHost, Task> onConfigurationEnable)
+        Func<HostApplicationBuilder, Task> onConfigurationEnable)
     {
         MuzLogging.InitializeBeforeHostBuild(); // ホストビルド前にログの初期化を行う（＾～＾）
 
@@ -27,10 +27,8 @@ internal static class MuzInfrastructure
         //builder.Services.AddSingleton<IMyService, MyService>();
         //builder.Services.AddTransient<SomeOtherService>();
 
-        var host = builder.Build();
-
         // ここから［設定ファイル］を使える（＾～＾）
-        await onConfigurationEnable(builder, host);
+        await onConfigurationEnable(builder);
     }
 
 
