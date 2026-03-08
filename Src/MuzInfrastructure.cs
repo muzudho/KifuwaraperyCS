@@ -4,7 +4,6 @@ using KifuwaraperyCS.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 internal static class MuzInfrastructure
 {
@@ -13,14 +12,13 @@ internal static class MuzInfrastructure
     /// </summary>
     public static async Task ActivateConfigurationAsync(
         string[] args,
+        HostApplicationBuilder builder,
         Func<HostApplicationBuilder, IHost, Task> onConfigurationEnable)
     {
         MuzLogging.InitializeBeforeHostBuild(); // ホストビルド前にログの初期化を行う（＾～＾）
 
-        var builder = Host.CreateApplicationBuilder(args);  // ホストビルド（＾～＾）
-
         MuzAppSettingsOperations.Setup(builder);    // ［設定ファイル］の設定（＾～＾）
-        MuzLogging.BridgeSerilogToILogger(builder); // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
+        MuzLogging.BridgeSerilogToILogger(builder); // （ビルド前に行う）ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
 
         // ここで DI コンテナにサービスを登録（＾～＾）
         builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // ［設定ファイル操作］を MuzAppSettings クラスにバインド
@@ -47,6 +45,7 @@ internal static class MuzInfrastructure
     {
         try
         {
+
             // 起動ログ（ILogger が使える）
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
 

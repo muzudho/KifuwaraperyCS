@@ -2,6 +2,7 @@
 using KifuwaraperyCS;
 using KifuwaraperyCS.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -9,8 +10,11 @@ try
 {
     Console.WriteLine("Hello, World!");
 
+    var builder = Host.CreateApplicationBuilder(args);  // ホストビルド（＾～＾）
+
     await MuzInfrastructure.ActivateConfigurationAsync(
         args: args,
+        builder: builder,
         onConfigurationEnable: async (builder, host) =>
         {
             // ここから［設定ファイル］を使える（＾～＾）！
