@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using KifuwaraperyCS;
 using KifuwaraperyCS.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -9,45 +9,25 @@ try
 {
     Console.WriteLine("Hello, World!");
 
-    var builder = Host.CreateApplicationBuilder(args);  // ビルダー作成（＾～＾）
-
-    // ホストビルド前に用意すること一覧（＾～＾）
-    MuzAppSettingsService.PrepareBeforeHostBuild(builder);   // ［設定ファイル］
-    await MuzLogging.ActivateLoggingBeforeHostBuildAsync( // ［ロギング］
-        builder: builder,
-        configurationMgr: builder.Configuration,    // ［設定ファイル］設定後（＾～＾）
-        onLoggingEnable: async (logger) =>
+    // ホストビルドするぜ（＾～＾）！
+    // ［ホスト］ってのは、いろいろ［サービス］っていう便利機能が付け加えられた、お前のアプリケーションみたいなもんだぜ（＾～＾）
+    await MuzInfrastructureService.BuildHostAsync(
+        args: args,
+        onHostEnable: async (host) =>
         {
-            // ここから［ロギング］できる（＾～＾）！
-            logger.LogInformation("ホストビルド前のログだぜ（＾～＾）！");
-        });
+            // ここからビルドされた［ホスト］が使えるぜ（＾～＾）！
 
-    // ホストビルド（＾～＾）
-    var host = builder.Build();
-
-    await MuzLogging.ActivateLoggingAfterHostBuildAsync(
-        configurationMgr: builder.Configuration,
-        host: host,
-        onLoggingEnable: async () =>
-        {
-            // ここから［ロギング］できる（＾～＾）！
-
-            // ［設定ファイル］のテスト出力
+            // ［設定ファイル］の動作確認してみようぜ（＾～＾）
             var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
             Console.WriteLine($"AppName: {appSettings.AppName}");
             Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
 
-            // 起動ログ（ILogger が使える）
+            // ［ロガー］の動作確認してみようぜ（＾～＾）
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
-
-            // ここからメイン処理
-            //var myService = host.Services.GetRequiredService<IMyService>();
-            //myService.DoSomething();
+            logger.LogInformation("ログを書き込むぜ～（＾～＾）！");
 
             // または IHostedService で長時間動かすアプリなら
             // await host.RunAsync();
-
-            logger.LogInformation("ログを書き込むぜ～（＾～＾）！");
 
             // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
             Console.Write("コマンドを入力: ");
