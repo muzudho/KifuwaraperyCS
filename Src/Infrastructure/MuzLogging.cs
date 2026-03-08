@@ -1,6 +1,7 @@
 ﻿namespace KifuwaraperyCS.Infrastructure;
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -17,35 +18,93 @@ using Serilog.Settings.Configuration;
 internal static class MuzLogging
 {
     /// <summary>
-    ///     <pre>
-    /// ロガーの初期化。
-    /// 
-    ///     - ホストビルド前に呼び出すことを推奨（＾～＾）！
-    ///     </pre>
+    /// ［ロギング］できるようにするぜ（＾～＾）！
     /// </summary>
-    public static void PrepareBeforeHostBuild(HostApplicationBuilder builder)
+    /// <returns></returns>
+    public static async Task ActivateLoggingBeforeHostBuildAsync(
+        HostApplicationBuilder builder,
+        ConfigurationManager configurationMgr,
+        Func<Microsoft.Extensions.Logging.ILogger, Task> onLoggingEnable)
     {
-        // Serilog のデフォルト状態を先にセットアップ（ホストビルド前に推奨）
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File(
-                "Logs/App-.log",
-                rollingInterval: RollingInterval.Day,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .CreateBootstrapLogger();  // ホストビルド中のログ用
+        try
+        {
+            // Serilog のデフォルト状態を先にセットアップ（ホストビルド前に推奨）
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    "Logs/App-.log",
+                    rollingInterval: RollingInterval.Day,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateBootstrapLogger();  // ホストビルド中のログ用
 
-        // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。これで ILogger<T> を使うと Serilog が使われるぜ（＾～＾）
-        builder.Services.AddSerilog();
-        // 細かく制御したい場合は、ILoggerFactory を直接設定することもできる（＾～＾）！
-        //builder.Logging.ClearProviders();
-        //builder.Logging.AddSerilog(new LoggerConfiguration()
-        //    .MinimumLevel.Information()
-        //    .WriteTo.Console()
-        //    .WriteTo.File("Logs/App-.log", rollingInterval: RollingInterval.Day)
-        //    .CreateLogger());
+            // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。これで ILogger<T> を使うと Serilog が使われるぜ（＾～＾）
+            builder.Services.AddSerilog();
+            // 細かく制御したい場合は、ILoggerFactory を直接設定することもできる（＾～＾）！
+            //builder.Logging.ClearProviders();
+            //builder.Logging.AddSerilog(new LoggerConfiguration()
+            //    .MinimumLevel.Information()
+            //    .WriteTo.Console()
+            //    .WriteTo.File("Logs/App-.log", rollingInterval: RollingInterval.Day)
+            //    .CreateLogger());
+
+
+            // ★ここでマイクロソフトの ILogger を builder から直接作れる★
+            var loggerBeforeHostBuild = builder.Logging.Services.BuildServiceProvider()
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("LoggerBeforeHostBuild");   // カテゴリ名は自由（Program とかでもOK）
+            try
+            {
+                MuzLogging.SetupFromConfigurationFile(configurationMgr); // ［設定ファイル］から［Serilog］の本設定。
+
+                // ここから［ロギング］できる（＾～＾）
+                await onLoggingEnable(loggerBeforeHostBuild);
+            }
+            catch (Exception ex)
+            {
+                loggerBeforeHostBuild.LogCritical(ex, "アプリが死んだ... むずでょ泣く");
+            }
+        }
+        finally
+        {
+            MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
+        }
+    }
+
+
+    /// <summary>
+    /// ［ロギング］できるようにするぜ（＾～＾）！
+    /// </summary>
+    /// <returns></returns>
+    public static async Task ActivateLoggingAfterHostBuildAsync(
+        ConfigurationManager configurationMgr,
+        IHost host,
+        Func<Task> onLoggingEnable)
+    {
+        try
+        {
+
+            // 起動ログ（ILogger が使える）
+            var logger = host.Services.GetRequiredService<ILogger<Program>>();
+
+            try
+            {
+                MuzLogging.SetupFromConfigurationFile(configurationMgr); // ［設定ファイル］から［Serilog］の本設定。
+
+                // ここから［ロギング］できる（＾～＾）
+                await onLoggingEnable();
+            }
+            catch (Exception ex)
+            {
+                logger.LogCritical(ex, "アプリが死んだ... むずでょ泣く");
+            }
+        }
+        finally
+        {
+            MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
+        }
     }
 
 

@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using KifuwaraperyCS;
 using KifuwaraperyCS.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,11 +13,9 @@ try
 
     // ホストビルド前に用意すること一覧（＾～＾）
     MuzAppSettingsService.PrepareBeforeHostBuild(builder);   // ［設定ファイル］
-    MuzLogging.PrepareBeforeHostBuild(builder); // ［ロギング］
-
-    await MuzInfrastructure.ActivateLoggingBeforeHostBuildAsync(
+    await MuzLogging.ActivateLoggingBeforeHostBuildAsync( // ［ロギング］
         builder: builder,
-        configurationMgr: builder.Configuration,
+        configurationMgr: builder.Configuration,    // ［設定ファイル］設定後（＾～＾）
         onLoggingEnable: async (logger) =>
         {
             // ここから［ロギング］できる（＾～＾）！
@@ -28,7 +25,7 @@ try
     // ホストビルド（＾～＾）
     var host = builder.Build();
 
-    await MuzInfrastructure.ActivateLoggingAfterHostBuildAsync(
+    await MuzLogging.ActivateLoggingAfterHostBuildAsync(
         configurationMgr: builder.Configuration,
         host: host,
         onLoggingEnable: async () =>
