@@ -19,6 +19,12 @@ try
         {
             // ここから［設定ファイル］を使える（＾～＾）！
 
+            // 自分のサービスを登録（例）
+            MuzLogging.InitializeBeforeHostBuild(); // ホストビルド前にログの初期化を行う（＾～＾）
+            MuzLogging.BridgeSerilogToILogger(builder); // （ビルド前に行う）ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
+                                                        //builder.Services.AddSingleton<IMyService, MyService>();
+                                                        //builder.Services.AddTransient<SomeOtherService>();
+
             var host = builder.Build();
 
             // ［設定ファイル］のテスト出力
