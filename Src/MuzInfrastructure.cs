@@ -1,6 +1,7 @@
 ﻿namespace KifuwaraperyCS;
 
 using KifuwaraperyCS.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -8,21 +9,37 @@ using Microsoft.Extensions.Logging;
 internal static class MuzInfrastructure
 {
     /// <summary>
-    /// 設定ファイルを使えるようにするぜ（＾～＾）
+    /// ［ロギング］できるようにするぜ（＾～＾）！
     /// </summary>
-    public static async Task ActivateConfigurationAsync(
-        string[] args,
+    /// <returns></returns>
+    public static async Task ActivateLoggingBeforeHostBuildAsync(
         HostApplicationBuilder builder,
-        Func<HostApplicationBuilder, Task> onConfigurationEnable)
+        ConfigurationManager configurationMgr,
+        Func<ILogger, Task> onLoggingEnable)
     {
+        try
+        {
 
-        MuzAppSettingsOperations.Setup(builder);    // ［設定ファイル］の設定（＾～＾）
+            // ★ここで ILogger を builder から直接作れる★
+            var loggerBeforeHostBuild = builder.Logging.Services.BuildServiceProvider()
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("LoggerBeforeHostBuild");   // カテゴリ名は自由（Program とかでもOK）
+            try
+            {
+                MuzLogging.SetupFromConfigurationFile(configurationMgr); // ［設定ファイル］から［Serilog］の本設定。
 
-        // ここで DI コンテナにサービスを登録（＾～＾）
-        builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // ［設定ファイル操作］を MuzAppSettings クラスにバインド
-
-        // ここから［設定ファイル］を使える（＾～＾）
-        await onConfigurationEnable(builder);
+                // ここから［ロギング］できる（＾～＾）
+                await onLoggingEnable(loggerBeforeHostBuild);
+            }
+            catch (Exception ex)
+            {
+                loggerBeforeHostBuild.LogCritical(ex, "アプリが死んだ... むずでょ泣く");
+            }
+        }
+        finally
+        {
+            MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
+        }
     }
 
 
@@ -30,8 +47,8 @@ internal static class MuzInfrastructure
     /// ［ロギング］できるようにするぜ（＾～＾）！
     /// </summary>
     /// <returns></returns>
-    public static async Task ActivateLoggingAsync(
-        HostApplicationBuilder builder,
+    public static async Task ActivateLoggingAfterHostBuildAsync(
+        ConfigurationManager configurationMgr,
         IHost host,
         Func<Task> onLoggingEnable)
     {
@@ -43,7 +60,7 @@ internal static class MuzInfrastructure
 
             try
             {
-                MuzLogging.SetupFromConfigurationFile(builder); // ［設定ファイル］から［Serilog］の本設定。
+                MuzLogging.SetupFromConfigurationFile(configurationMgr); // ［設定ファイル］から［Serilog］の本設定。
 
                 // ここから［ロギング］できる（＾～＾）
                 await onLoggingEnable();

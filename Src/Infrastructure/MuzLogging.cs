@@ -1,5 +1,6 @@
 ﻿namespace KifuwaraperyCS.Infrastructure;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -22,7 +23,7 @@ internal static class MuzLogging
     ///     - ホストビルド前に呼び出すことを推奨（＾～＾）！
     ///     </pre>
     /// </summary>
-    public static void InitializeBeforeHostBuild()
+    public static void PrepareBeforeHostBuild(HostApplicationBuilder builder)
     {
         // Serilog のデフォルト状態を先にセットアップ（ホストビルド前に推奨）
         Log.Logger = new LoggerConfiguration()
@@ -35,26 +36,9 @@ internal static class MuzLogging
                 rollingInterval: RollingInterval.Day,
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .CreateBootstrapLogger();  // ホストビルド中のログ用
-    }
 
-
-    public static void Cleanup()
-    {
-        Log.CloseAndFlush();
-    }
-
-    /// <summary>
-    ///     <pre>
-    /// ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
-    /// 
-    ///     - これで ILogger<T> が使える。
-    ///     </pre>
-    /// </summary>
-    /// <param name="builder"></param>
-    public static void BridgeSerilogToILogger(HostApplicationBuilder builder)
-    {
+        // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。これで ILogger<T> を使うと Serilog が使われるぜ（＾～＾）
         builder.Services.AddSerilog();
-
         // 細かく制御したい場合は、ILoggerFactory を直接設定することもできる（＾～＾）！
         //builder.Logging.ClearProviders();
         //builder.Logging.AddSerilog(new LoggerConfiguration()
@@ -65,17 +49,23 @@ internal static class MuzLogging
     }
 
 
+    public static void Cleanup()
+    {
+        Log.CloseAndFlush();
+    }
+
+
     /// <summary>
     /// ［設定ファイル］からロガーの設定を行う。
     /// </summary>
-    public static void SetupFromConfigurationFile(HostApplicationBuilder builder)
+    public static void SetupFromConfigurationFile(ConfigurationManager configurationMgr)
     {
         var options = new ConfigurationReaderOptions
         {
             SectionName = "CustomLogging:Serilog"  // ← ここでセクションを指定！
         };
         Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration, options)  // ← これで Serilog セクション全部読み込む！
+            .ReadFrom.Configuration(configurationMgr, options)  // ← これで Serilog セクション全部読み込む！
             .Enrich.FromLogContext()  // 任意: 便利な enricher
             .CreateLogger();
     }
