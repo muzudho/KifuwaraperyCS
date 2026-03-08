@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using KifuwaraperyCS;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 try
@@ -16,7 +18,9 @@ try
     // または IHostedService で長時間動かすアプリなら
     // await host.RunAsync();
 
-    Log.Information("ログを書き込むぜ～（＾～＾）！");
+    // 起動ログ（ILogger が使える）
+    var logger = host.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation("ログを書き込むぜ～（＾～＾）！");
 
     // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
     Console.Write("コマンドを入力: ");
