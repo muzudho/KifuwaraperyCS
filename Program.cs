@@ -1,7 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using KifuwaraperyCS;
+using KifuwaraperyCS.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 try
 {
@@ -10,56 +12,72 @@ try
     // ロギングの準備（＾～＾）
     await MuzInfrastructure.PrepareLoggingAsync(
         args: args,
-        onLoggingEnable: async (host) =>
+        onConfigurationEnable: async (builder, host) =>
         {
-            // 起動ログ（ILogger が使える）
-            var logger = host.Services.GetRequiredService<ILogger<Program>>();
+            // ここから［設定ファイル］を使える（＾～＾）！
+            MuzLogging.SetupFromConfigurationFile(builder); // ［設定ファイル］から［Serilog］の本設定。
 
+            // ここから［ロギング］できる（＾～＾）
             try
             {
-                // ここからメイン処理
-                //var myService = host.Services.GetRequiredService<IMyService>();
-                //myService.DoSomething();
+                // 起動ログ（ILogger が使える）
+                var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
-                // または IHostedService で長時間動かすアプリなら
-                // await host.RunAsync();
-
-                logger.LogInformation("ログを書き込むぜ～（＾～＾）！");
-
-                // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
-                Console.Write("コマンドを入力: ");
-                string input = Console.ReadLine()?.Trim() ?? "";
-
-                if (string.IsNullOrWhiteSpace(input))
+                try
                 {
-                    Console.WriteLine("何も入力されてないぜ（＾～＾）");
-                    return;
+                    // ここからメイン処理
+                    //var myService = host.Services.GetRequiredService<IMyService>();
+                    //myService.DoSomething();
+
+                    // または IHostedService で長時間動かすアプリなら
+                    // await host.RunAsync();
+
+                    logger.LogInformation("ログを書き込むぜ～（＾～＾）！");
+
+                    // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
+                    Console.Write("コマンドを入力: ");
+                    string input = Console.ReadLine()?.Trim() ?? "";
+
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        Console.WriteLine("何も入力されてないぜ（＾～＾）");
+                        return;
+                    }
+
+                    // 最初のスペースで分割（2つに分ける）
+                    string[] parts = input.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (parts.Length == 0)
+                    {
+                        Console.WriteLine("空っぽだぜ");
+                        return;
+                    }
+
+                    string first = parts[0];                    // "Apple"
+                    string rest = parts.Length > 1 ? parts[1] : "";  // "Banana Cherry"
+
+                    Console.WriteLine($"最初の部分   : {first}");
+                    Console.WriteLine($"残りの部分   : {rest}");
+
+                    Console.WriteLine("アプリ終了！ Enter押してね");
+                    Console.ReadLine();
+
+                    Console.WriteLine("どやさ（＾～＾）！");
                 }
-
-                // 最初のスペースで分割（2つに分ける）
-                string[] parts = input.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-
-                if (parts.Length == 0)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("空っぽだぜ");
-                    return;
+                    logger.LogCritical(ex, "アプリが死んだ... むずでょ泣く");
                 }
-
-                string first = parts[0];                    // "Apple"
-                string rest = parts.Length > 1 ? parts[1] : "";  // "Banana Cherry"
-
-                Console.WriteLine($"最初の部分   : {first}");
-                Console.WriteLine($"残りの部分   : {rest}");
-
-                Console.WriteLine("アプリ終了！ Enter押してね");
-                Console.ReadLine();
-
-                Console.WriteLine("どやさ（＾～＾）！");
             }
-            catch (Exception ex)
+            finally
             {
-                logger.LogCritical(ex, "アプリが死んだ... むずでょ泣く");
+                MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
             }
+
+            // ［設定ファイル］のテスト出力
+            var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
+            Console.WriteLine($"AppName: {appSettings.AppName}");
+            Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
         });
 
 }
