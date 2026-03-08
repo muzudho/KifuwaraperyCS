@@ -10,31 +10,41 @@ internal static class MuzInfrastructure
     /// <summary>
     /// インフラストラクチャの初期化。
     /// </summary>
-    public static IHost InitializeProgram(string[] args)
-    {        
-        MuzLogging.InitializeBeforeHostBuild(); // ホストビルド前にログの初期化を行う（＾～＾）
-        
-        var builder = Host.CreateApplicationBuilder(args);  // ホストビルド（＾～＾）
-        
-        MuzAppSettingsOperations.Setup(builder);    // ［設定ファイル］の設定（＾～＾）
-        MuzLogging.BridgeSerilogToILogger(builder); // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
+    public static async Task PrepareLoggingAsync(
+        string[] args,
+        Func<IHost, Task> onLoggingEnable)
+    {
+        try
+        {
+            MuzLogging.InitializeBeforeHostBuild(); // ホストビルド前にログの初期化を行う（＾～＾）
 
-        // ここで DI コンテナにサービスを登録（＾～＾）
-        builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // ［設定ファイル操作］を MuzAppSettings クラスにバインド
+            var builder = Host.CreateApplicationBuilder(args);  // ホストビルド（＾～＾）
 
-        // 自分のサービスを登録（例）
-        //builder.Services.AddSingleton<IMyService, MyService>();
-        //builder.Services.AddTransient<SomeOtherService>();
+            MuzAppSettingsOperations.Setup(builder);    // ［設定ファイル］の設定（＾～＾）
+            MuzLogging.BridgeSerilogToILogger(builder); // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
 
-        var host = builder.Build();
+            // ここで DI コンテナにサービスを登録（＾～＾）
+            builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // ［設定ファイル操作］を MuzAppSettings クラスにバインド
 
-        MuzLogging.SetupFromConfigurationFile(builder); // ［設定ファイル］から［Serilog］の本設定。
+            // 自分のサービスを登録（例）
+            //builder.Services.AddSingleton<IMyService, MyService>();
+            //builder.Services.AddTransient<SomeOtherService>();
 
-        // ［設定ファイル］のテスト出力
-        var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
-        Console.WriteLine($"AppName: {appSettings.AppName}");
-        Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
+            var host = builder.Build();
 
-        return host;
+            MuzLogging.SetupFromConfigurationFile(builder); // ［設定ファイル］から［Serilog］の本設定。
+
+            // ここからログが使える（＾～＾）
+            await onLoggingEnable(host);
+
+            // ［設定ファイル］のテスト出力
+            var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
+            Console.WriteLine($"AppName: {appSettings.AppName}");
+            Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
+        }
+        finally
+        {
+            MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
+        }
     }
 }

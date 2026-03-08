@@ -38,6 +38,11 @@ internal static class MuzLogging
     }
 
 
+    public static void Cleanup()
+    {
+        Log.CloseAndFlush();
+    }
+
     /// <summary>
     ///     <pre>
     /// ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。
