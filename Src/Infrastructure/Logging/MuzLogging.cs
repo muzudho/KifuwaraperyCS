@@ -29,7 +29,7 @@ internal static class MuzLogging
     /// </summary>
     /// <returns></returns>
     public static async Task SetupBeforeHostBuildAsync(
-        HostApplicationBuilder builder,
+        IHostApplicationBuilder builder,
         Func<Microsoft.Extensions.Logging.ILogger, Task> onBootstrapLoggingEnabled)
     {
         // （ホストビルド前にログを出したいこともあるので、ホストビルド前に） Serilog のデフォルト状態をセットアップするぜ（＾▽＾）！
