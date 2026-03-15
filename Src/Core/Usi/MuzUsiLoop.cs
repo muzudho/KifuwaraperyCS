@@ -74,6 +74,32 @@ internal static class MuzUsiLoop
             // 以下、独自実装
             // ----------------------------------------
             // ----------------------------------------
+            // 盤上の先後付き駒種類
+            // ----------------------------------------
+            else if (commandName == "test-piece-type")
+            {
+
+            }
+            // ----------------------------------------
+            // 単体テスト　＞　マス位置
+            // ----------------------------------------
+            else if (commandName == "test-square-delta")
+            {
+
+            }
+            else if (commandName == "test-square")
+            {
+
+            }
+            else if (commandName == "test-rank")
+            {
+
+            }
+            else if (commandName == "test-file")
+            {
+
+            }
+            // ----------------------------------------
             // 単体テスト　＞　両駒台の持ち駒の枚数
             // ----------------------------------------
             else if (commandName == "test-hand-stand-collection")
