@@ -43,12 +43,12 @@ internal static class MuzInfrastructureHelper
 
         MuzAppSettingsHelper.SetupBeforeHostBuild(builder);   // ［アプリケーション設定ファイル］を読み書きできるようにするための準備をするぜ（＾～＾）！
 
-        await MuzLogging.SetupBeforeHostBuildAsync( // ［ロギング］
+        await MuzLogging.SetupBeforeHostBuildAsync( // ［ロギング］するための準備をするぜ（＾～＾）！
             builder: builder,
-            onBootstrapLoggingEnabled: async (logger) =>
+            onBootstrapLoggingEnabled: async (bootstrapLogger) =>
             {
-                // ここから［ロギング］できる（＾～＾）！
-                logger.LogInformation("ホストビルド前だが、ブートストラップ・ログは出せるぜ（＾～＾）！");
+                // ここから `bootstrapLogger` を使った［ロギング］できる（＾～＾）！
+                bootstrapLogger.LogInformation("ホストビルド前だが、ブートストラップ・ログは出せるぜ（＾～＾）！");
             });
     }
 
