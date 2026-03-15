@@ -3,6 +3,7 @@
 using KifuwaraperyCS.Src.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 
 internal static class MuzUsiLoop
 {
@@ -16,38 +17,26 @@ internal static class MuzUsiLoop
     public static async Task RunAsync(IMuzLoggingService loggingSvc)
     {
         // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
+        // 返り値は空文字列ではないぜ（＾～＾）
         var input = GetInput(loggingSvc);
-
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            Console.WriteLine("何も入力されてないぜ（＾～＾）");
-            return;
-        }
 
         while (true)
         {
             // 最初のスペースで分割（2つに分ける）
             string[] parts = input.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 0) throw new UnreachableException("空っぽだぜ");
 
-            if (parts.Length == 0)
-            {
-                Console.WriteLine("空っぽだぜ");
-                return;
-            }
-
-            string first = parts[0];                    // "Apple"
+            // "Apple Banana Cherry" なら。
+            string commandName = parts[0];                    // "Apple"
             string rest = parts.Length > 1 ? parts[1] : "";  // "Banana Cherry"
 
-            Console.WriteLine($"最初の部分   : {first}");
-            Console.WriteLine($"残りの部分   : {rest}");
+            loggingSvc.Others.LogDebug($"最初の部分   : {commandName}");
+            loggingSvc.Others.LogDebug($"残りの部分   : {rest}");
 
+            if (commandName == "quit") break;
+
+            // 返り値は空文字列ではないぜ（＾～＾）
             input = GetInput(loggingSvc);
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("何も入力されてないぜ（＾～＾）");
-                return;
-            }
         }
     }
 
@@ -59,7 +48,17 @@ internal static class MuzUsiLoop
     public static string GetInput(IMuzLoggingService loggingSvc)
     {
         Console.Write("コマンドを入力: ");
-        string input = Console.ReadLine()?.Trim() ?? "";
+
+        string input;
+
+        while (true)
+        {
+            input = Console.ReadLine()?.Trim() ?? "";
+
+            // 空文字列なら、ループを続けるぜ（＾～＾）！ そうすれば、ユーザーが何か入力するまで待ち続けることができるぜ（＾～＾）！
+            if (!string.IsNullOrWhiteSpace(input)) break;
+        }
+
         loggingSvc.Operation.LogInformation($"[{input}]コマンドを入力しました。");
 
         return input;
