@@ -42,6 +42,40 @@ internal static class MuzUsiLoop
                 // 将棋の思考エンジンの名前と開発者名を返すぜ（＾▽＾）
                 SendOutput($"id name {appSettings.ShogiEngineName}\nid author {appSettings.ShogiEngineAuthor}\nusiok\n", loggingSvc);
             }
+            else if (commandName == "isready")
+            {
+                // エンジンが準備できたら、"readyok" を返すぜ（＾▽＾）
+                SendOutput($"readyok\n", loggingSvc);
+            }
+            else if (commandName == "setoption")
+            {
+                // TODO: エンジンのオプションを設定するコマンド。これが来たら、オプションを変更する。
+            }
+            else if (commandName == "usinewgame")
+            {
+                // 新しいゲームの開始を知らせるコマンド。これが来たら、前のゲームの情報をクリアする。
+            }
+            // ----------------------------------------
+            // 局面
+            // ----------------------------------------
+            //      - 例： `position sfen lnsgkgsnl/9/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1 moves 5a6b 7g7f 3a3b`
+            else if (commandName == "position")
+            {
+            }
+            else if (commandName == "go")
+            {
+                // TODO: 思考開始のコマンド。これが来たら、思考を開始する。
+                //usiOperation.Go(gameStats, pos, ssCmd);
+
+                SendOutput($"bestmove resign\n", loggingSvc);   // とりあえず投了を返すぜ（＾ｑ＾）
+            }
+            // ----------------------------------------
+            // 無いよ
+            // ----------------------------------------
+            else
+            {
+                SendOutput("そんなコマンド無い（＾～＾）\n", loggingSvc);
+            }
 
             // 返り値は空文字列ではないぜ（＾～＾）
             input = GetInput(loggingSvc);
@@ -68,7 +102,8 @@ internal static class MuzUsiLoop
             if (!string.IsNullOrWhiteSpace(input)) break;
         }
 
-        loggingSvc.Operation.LogInformation($"[{input}]コマンドを入力しました。");
+        loggingSvc.USIProtocol.LogInformation($"{input}\n");
+        loggingSvc.Operation.LogInformation($"[{input}]コマンドを入力しました。\n");
 
         return input;
     }
