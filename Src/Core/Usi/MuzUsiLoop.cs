@@ -40,7 +40,7 @@ internal static class MuzUsiLoop
             if (commandName == "usi")
             {
                 // 将棋の思考エンジンの名前と開発者名を返すぜ（＾▽＾）
-                loggingSvc.USIProtocol.LogInformation($"id name {appSettings.ShogiEngineName}\nid author {appSettings.ShogiEngineAuthor}\nusiok\n");
+                SendOutput($"id name {appSettings.ShogiEngineName}\nid author {appSettings.ShogiEngineAuthor}\nusiok\n", loggingSvc);
             }
 
             // 返り値は空文字列ではないぜ（＾～＾）
@@ -71,5 +71,17 @@ internal static class MuzUsiLoop
         loggingSvc.Operation.LogInformation($"[{input}]コマンドを入力しました。");
 
         return input;
+    }
+
+
+    /// <summary>
+    /// USIメッセージの出力用（＾～＾）
+    /// </summary>
+    /// <param name="message">USIメッセージ</param>
+    /// <param name="loggingSvc"></param>
+    public static void SendOutput(string message, IMuzLoggingService loggingSvc)
+    {
+        Console.WriteLine(message);
+        loggingSvc.USIProtocol.LogInformation(message);
     }
 }
