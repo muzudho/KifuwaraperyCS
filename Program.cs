@@ -10,12 +10,13 @@ try
     Console.WriteLine("Hello, World!");
 
     // ホストビルドするぜ（＾～＾）！
-    // ［ホスト］ってのは、いろいろ［サービス］っていう便利機能が付け加えられた、お前のアプリケーションみたいなもんだぜ（＾～＾）
+    // ［ホスト］ってのは［汎用ホスト］のことで、いろいろ［サービス］っていう便利機能を付け加えることができるフレームワークみたいなもんだぜ（＾～＾）
+    // それを［ビルド］するぜ（＾▽＾）
     await MuzInfrastructureService.BuildHostAsync(
-        args: args,
-        onHostEnable: async (host) =>
+        commandLineArgs: args,
+        onHostEnabled: async (host) =>
         {
-            // ここからビルドされた［ホスト］が使えるぜ（＾～＾）！
+            // ここからビルドされた［汎用ホスト］が使えるぜ（＾▽＾）！
 
             // ［設定ファイル］の動作確認してみようぜ（＾～＾）
             var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
