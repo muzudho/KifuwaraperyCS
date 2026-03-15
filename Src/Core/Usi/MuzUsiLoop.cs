@@ -74,9 +74,17 @@ internal static class MuzUsiLoop
             // 以下、独自実装
             // ----------------------------------------
             // ----------------------------------------
+            // 単体テスト　＞　手番
+            // ----------------------------------------
+            else if (commandName == "test-turn")
+            {
+                SendOutput($"黒を表示 = {new MuzColorModel(MuzColorType.Black).ToString()}\n", loggingSvc);
+                SendOutput($"白を表示 = {new MuzColorModel(MuzColorType.White).ToString()}\n", loggingSvc);
+                SendOutput($"エラー表示 = {new MuzColorModel(MuzColorType.None).ToString()}\n", loggingSvc);
+            }
+            // ----------------------------------------
             // 単体テスト　＞　手数
             // ----------------------------------------
-            // 手数の描画
             else if (commandName == "test-radix-half-ply")
             {
                 SendOutput($"5を表示 = {new MuzRadixHalfPlyModel(5).Value}\n", loggingSvc);
