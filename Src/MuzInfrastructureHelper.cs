@@ -40,7 +40,7 @@ internal static class MuzInfrastructureHelper
     {
         // お前のアプリケーションに合わせて、［サービス］を追加していってくれだぜ（＾～＾）！
 
-        MuzAppSettingsService.SetupBeforeHostBuild(builder);   // ［設定ファイル］
+        MuzAppSettingsHelper.SetupBeforeHostBuild(builder);   // ［アプリケーション設定ファイル］を読み書きできるようにするための準備をするぜ（＾～＾）！
 
         await MuzLogging.ActivateLoggingBeforeHostBuildAsync( // ［ロギング］
             builder: builder,

@@ -4,12 +4,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-internal static class MuzAppSettingsService
+/// <summary>
+/// ［アプリケーション設定ファイル］そのもののコードではないが、それを使う準備をするためのコードをまとめたクラスだぜ（＾～＾）！
+/// </summary>
+internal static class MuzAppSettingsHelper
 {
     /// <summary>
     /// ［設定ファイル］の設定（＾～＾）
     /// </summary>
-    public static void SetupBeforeHostBuild(HostApplicationBuilder builder)
+    public static void SetupBeforeHostBuild(IHostApplicationBuilder builder)
     {
         // ［設定ファイル］の設定（＾～＾）
         builder.Configuration
