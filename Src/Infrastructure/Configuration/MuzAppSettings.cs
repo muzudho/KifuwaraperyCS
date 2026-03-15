@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 internal static class MuzAppSettingsHelper
 {
     /// <summary>
-    /// ［設定ファイル］の設定（＾～＾）
+    /// ［ホストビルド］の前に、諸々の設定をするぜ（＾～＾）
     /// </summary>
     public static void SetupBeforeHostBuild(IHostApplicationBuilder builder)
     {

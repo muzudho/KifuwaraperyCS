@@ -1,7 +1,7 @@
 ﻿namespace KifuwaraperyCS;
 
-using KifuwaraperyCS.Infrastructure;
 using KifuwaraperyCS.Src.Infrastructure.Configuration;
+using KifuwaraperyCS.Src.Infrastructure.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -19,12 +19,13 @@ internal static class MuzInfrastructureHelper
         await SetupBeforeBuildAsync(builder);    // ビルド前の処理（＾～＾）
         var host = builder.Build(); // ホストビルド（＾～＾）
 
-        await MuzLogging.ActivateLoggingAfterHostBuildAsync(
+        await MuzLogging.SetupAfterHostBuildAsync(
             configurationMgr: builder.Configuration,
             host: host,
-            onLoggingEnable: async () =>
+            onLoggingEnabled: async () =>
             {
-                // ここから［ロギング］できる（＾～＾）！
+                // ここから、以下のようにして、ロガー（ILogger）を使えるようになったぜ（＾▽＾）！
+                //var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
                 await onHostEnabled(host);
             });
@@ -42,13 +43,22 @@ internal static class MuzInfrastructureHelper
 
         MuzAppSettingsHelper.SetupBeforeHostBuild(builder);   // ［アプリケーション設定ファイル］を読み書きできるようにするための準備をするぜ（＾～＾）！
 
-        await MuzLogging.ActivateLoggingBeforeHostBuildAsync( // ［ロギング］
+        await MuzLogging.SetupBeforeHostBuildAsync( // ［ロギング］
             builder: builder,
-            configurationMgr: builder.Configuration,    // ［設定ファイル］設定後（＾～＾）
-            onLoggingEnable: async (logger) =>
+            onBootstrapLoggingEnabled: async (logger) =>
             {
                 // ここから［ロギング］できる（＾～＾）！
-                logger.LogInformation("ホストビルド前のログだぜ（＾～＾）！");
+                logger.LogInformation("ホストビルド前だが、ブートストラップ・ログは出せるぜ（＾～＾）！");
             });
+    }
+
+
+    /// <summary>
+    /// アプリケーション終了時に片付けるぜ（＾▽＾）
+    /// </summary>
+    /// <returns></returns>
+    public static async Task Cleanup()
+    {
+        MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
     }
 }
