@@ -1,5 +1,6 @@
 ﻿namespace KifuwaraperyCS.Src.Core.Usi;
 
+using KifuwaraperyCS.Src.Core.Usi.Elements;
 using KifuwaraperyCS.Src.Infrastructure.Configuration;
 using KifuwaraperyCS.Src.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
@@ -68,6 +69,17 @@ internal static class MuzUsiLoop
                 //usiOperation.Go(gameStats, pos, ssCmd);
 
                 SendOutput($"bestmove resign\n", loggingSvc);   // とりあえず投了を返すぜ（＾ｑ＾）
+            }
+            // ----------------------------------------
+            // 以下、独自実装
+            // ----------------------------------------
+            // ----------------------------------------
+            // 単体テスト　＞　手数
+            // ----------------------------------------
+            // 手数の描画
+            else if (commandName == "test-radix-half-ply")
+            {
+                SendOutput($"5を表示 = {new MuzRadixHalfPlyModel(5).Value}\n", loggingSvc);
             }
             // ----------------------------------------
             // 無いよ
