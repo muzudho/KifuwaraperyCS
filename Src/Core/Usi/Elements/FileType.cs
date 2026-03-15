@@ -19,25 +19,33 @@
 internal enum FileType
 {
     /// <summary>
+    ///     <pre>
     /// 平手黒番から見て、１筋目（左端）。
+    /// 
+    ///     - Apery では `FileI`。
+    ///     </pre>
     /// </summary>
-    FileI = 0,
+    Suji1 = 0,
 
-    FileH, FileG, FileF, FileE, FileD, FileC, FileB,
+    Suji2, Suji3, Suji4, Suji5, Suji6, Suji7, Suji8,
 
     /// <summary>
+    ///     <pre>
     /// 平手黒番から見て、９筋目（右端）。
+    /// 
+    ///     - Apery では `FileA`。
+    ///     </pre>
     /// </summary>
-    FileA,
+    Suji9,
 
     /// <summary>
     /// 列挙型の終端
     /// </summary>
-    FileNum,
-    None = FileNum,
+    SujiNum,
+    None = SujiNum,
 
     /// <summary>
     /// 
     /// </summary>
-    FileNoLeftNum = FileD
+    FileNoLeftNum = Suji6
 }

@@ -19,20 +19,28 @@
 internal enum RankType
 {
     /// <summary>
+    ///     <pre>
     /// 平手黒番から見て、１段目（上端）。
+    /// 
+    ///     - Apery では `Rank9`。
+    ///     </pre>
     /// </summary>
-    Rank9,
+    Dan1,
 
-    Rank8, Rank7, Rank6, Rank5, Rank4, Rank3, Rank2,
+    Dan2, Dan3, Dan4, Dan5, Dan6, Dan7, Dan8,
 
     /// <summary>
+    ///     <pre>
     /// 平手黒番から見て、９段目（下端）。
+    /// 
+    ///     - Apery では `Rank1`。
+    ///     </pre>
     /// </summary>
-    Rank1,
+    Dan9,
 
     /// <summary>
     /// 列挙型の終端
     /// </summary>
-    RankNum,
-    None = RankNum,
+    DanNum,
+    None = DanNum,
 }
