@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Infrastructure;
+﻿namespace KifuwaraperyCS.Src.Infrastructure.Configuration;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,15 +9,16 @@ internal static class MuzAppSettingsService
     /// <summary>
     /// ［設定ファイル］の設定（＾～＾）
     /// </summary>
-    public static void PrepareBeforeHostBuild(HostApplicationBuilder builder)
+    public static void SetupBeforeHostBuild(HostApplicationBuilder builder)
     {
+        // ［設定ファイル］の設定（＾～＾）
         builder.Configuration
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)  // 必須ファイル
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)  // 必須ファイル。ファイル編集後にはリロードするぜ（＾～＾）！
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)   // 環境ごとのファイル。ファイル編集後にはリロードするぜ（＾～＾）！　必須じゃないぜ（＾～＾）！
             .AddEnvironmentVariables();  // 環境変数で［環境の名前］を使って、設定のカスケード（上書き）を可能にするぜ（＾～＾）
 
         // ここで DI コンテナにサービスを登録（＾～＾）
-        builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // ［設定ファイル操作］を MuzAppSettings クラスにバインド
+        builder.Services.Configure<MuzAppSettings>(builder.Configuration);  // さっきの［設定ファイルの設定］を MuzAppSettings クラスにバインド（＾～＾）
     }
 }
 

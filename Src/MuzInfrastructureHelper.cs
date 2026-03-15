@@ -1,14 +1,15 @@
 ﻿namespace KifuwaraperyCS;
 
 using KifuwaraperyCS.Infrastructure;
+using KifuwaraperyCS.Src.Infrastructure.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 
 /// <summary>
-/// どんなコンソール・アプリを作るときでも、本題に入る前に似たようなコードを書くことになる……、そんな似たコード［ホストビルド］をまとめたクラスだぜ（＾～＾）！
+/// どんなコンソール・アプリを作るときでも、本題に入る前に似たようなコードを書くことになる……、そんな似たコード［ホストビルド］をまとめたヘルパークラスだぜ（＾～＾）！
 /// </summary>
-internal static class MuzInfrastructureService
+internal static class MuzInfrastructureHelper
 {
     public static async Task BuildHostAsync(
         string[] commandLineArgs,
@@ -39,7 +40,8 @@ internal static class MuzInfrastructureService
     {
         // お前のアプリケーションに合わせて、［サービス］を追加していってくれだぜ（＾～＾）！
 
-        MuzAppSettingsService.PrepareBeforeHostBuild(builder);   // ［設定ファイル］
+        MuzAppSettingsService.SetupBeforeHostBuild(builder);   // ［設定ファイル］
+
         await MuzLogging.ActivateLoggingBeforeHostBuildAsync( // ［ロギング］
             builder: builder,
             configurationMgr: builder.Configuration,    // ［設定ファイル］設定後（＾～＾）

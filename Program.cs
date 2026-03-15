@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using KifuwaraperyCS;
-using KifuwaraperyCS.Infrastructure;
+using KifuwaraperyCS.Src.Infrastructure.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,11 +12,11 @@ try
     // ホストビルドするぜ（＾～＾）！
     // ［ホスト］ってのは［汎用ホスト］のことで、いろいろ［サービス］っていう便利機能を付け加えることができるフレームワークみたいなもんだぜ（＾～＾）
     // それを［ビルド］するぜ（＾▽＾）
-    await MuzInfrastructureService.BuildHostAsync(
+    await MuzInfrastructureHelper.BuildHostAsync(
         commandLineArgs: args,
         onHostEnabled: async (host) =>
         {
-            // ここからビルドされた［汎用ホスト］が使えるぜ（＾▽＾）！
+            // ここからビルドされた［汎用ホスト］（host）が使えるぜ（＾▽＾）！
 
             // ［設定ファイル］の動作確認してみようぜ（＾～＾）
             var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
