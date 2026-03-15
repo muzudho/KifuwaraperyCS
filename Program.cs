@@ -37,7 +37,7 @@ try
             // または IHostedService で長時間動かすアプリなら
             // await host.RunAsync();
 
-            await MuzUsiLoop.RunAsync(loggingSvc);
+            await MuzUsiLoop.RunAsync(appSettings, loggingSvc);
 
             Console.WriteLine("アプリ終了！ Enter押してね");
             Console.ReadLine();

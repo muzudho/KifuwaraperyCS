@@ -1,5 +1,6 @@
 ﻿namespace KifuwaraperyCS.Src.Core.Usi;
 
+using KifuwaraperyCS.Src.Infrastructure.Configuration;
 using KifuwaraperyCS.Src.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,7 +15,9 @@ internal static class MuzUsiLoop
     // ========================================
 
 
-    public static async Task RunAsync(IMuzLoggingService loggingSvc)
+    public static async Task RunAsync(
+        MuzAppSettings appSettings,
+        IMuzLoggingService loggingSvc)
     {
         // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
         // 返り値は空文字列ではないぜ（＾～＾）
@@ -34,6 +37,13 @@ internal static class MuzUsiLoop
             loggingSvc.Others.LogDebug($"残りの部分   : {rest}");
 
             if (commandName == "quit") break;
+            if (commandName == "usi")
+            {
+                // TODO: USIプロトコルのバージョンを返すぜ（＾▽＾）
+                var message = $"id name {appSettings.ShogiEngineName}\nid author {appSettings.ShogiEngineAuthor}\nusiok\n";
+                Console.Write(message);
+                loggingSvc.Operation.LogInformation(message);
+            }
 
             // 返り値は空文字列ではないぜ（＾～＾）
             input = GetInput(loggingSvc);
@@ -44,6 +54,7 @@ internal static class MuzUsiLoop
     // ========================================
     // 内部メソッド
     // ========================================
+
 
     public static string GetInput(IMuzLoggingService loggingSvc)
     {
