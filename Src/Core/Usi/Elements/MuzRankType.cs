@@ -16,36 +16,31 @@
 ///     A9, A8, A7, A6, A5, A4, A3, A2, A1,		// ９筋目
 ///     </pre>
 /// </summary>
-internal enum FileType
+internal enum MuzRankType
 {
     /// <summary>
     ///     <pre>
-    /// 平手黒番から見て、１筋目（左端）。
+    /// 平手黒番から見て、１段目（上端）。
     /// 
-    ///     - Apery では `FileI`。
+    ///     - Apery では `Rank9`。
     ///     </pre>
     /// </summary>
-    Suji1 = 0,
+    Dan1,
 
-    Suji2, Suji3, Suji4, Suji5, Suji6, Suji7, Suji8,
+    Dan2, Dan3, Dan4, Dan5, Dan6, Dan7, Dan8,
 
     /// <summary>
     ///     <pre>
-    /// 平手黒番から見て、９筋目（右端）。
+    /// 平手黒番から見て、９段目（下端）。
     /// 
-    ///     - Apery では `FileA`。
+    ///     - Apery では `Rank1`。
     ///     </pre>
     /// </summary>
-    Suji9,
+    Dan9,
 
     /// <summary>
     /// 列挙型の終端
     /// </summary>
-    SujiNum,
-    None = SujiNum,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    FileNoLeftNum = Suji6
+    DanNum,
+    None = DanNum,
 }

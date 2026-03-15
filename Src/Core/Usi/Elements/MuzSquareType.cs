@@ -21,7 +21,7 @@
 ///		0 ビット目から順に、以下の位置と対応させる。
 ///     </pre>
 /// </summary>
-internal enum SquareType
+internal enum MuzSquareType
 {
     // Apery オリジナルの後に、盤面のマスを 0 から順に再定義していくぜ（＾～＾） 頑固一徹のきふわらべは将棋の符号の筋→段の順に合わせてあるぜ（＾～＾）
     // M は マスの意味だぜ（＾～＾）
