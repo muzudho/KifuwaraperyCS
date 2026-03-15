@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS;
+﻿namespace KifuwaraperyCS.Src;
 
 using KifuwaraperyCS.Src.Infrastructure.Configuration;
 using KifuwaraperyCS.Src.Infrastructure.Logging;
@@ -15,10 +15,17 @@ internal static class MuzInfrastructureHelper
         string[] commandLineArgs,
         Func<IHost, Task> onHostEnabled)
     {
-        var builder = Host.CreateApplicationBuilder(commandLineArgs);  // ビルダー作成（＾～＾）
+        // ビルダー作成（＾～＾）
+        //
+        //      ここでは、［コンソールアプリケーション］用のビルダーを作るぜ（＾～＾）！
+        //      もし、［ウェブアプリケーション］用のビルダーが必要なら、コメントアウトしてある行を使って、コードの対応個所の型を全部書き替えてくれだぜ（＾～＾）！
+        HostApplicationBuilder builder = Host.CreateApplicationBuilder(commandLineArgs);  // コンソールアプリケーション用（＾～＾）
+        //WebApplicationBuilder builder = WebApplication.CreateBuilder(commandLineArgs);  // ウェブアプリケーション用（＾～＾）
+
         await SetupBeforeBuildAsync(builder);    // ビルド前の処理（＾～＾）
         var host = builder.Build(); // ホストビルド（＾～＾）
 
+        //await onHostEnabled(host);  // ホストは有効になっているぜ（＾▽＾）！
         await MuzLogging.SetupAfterHostBuildAsync(
             configurationMgr: builder.Configuration,
             host: host,
@@ -56,9 +63,10 @@ internal static class MuzInfrastructureHelper
     /// <summary>
     /// アプリケーション終了時に片付けるぜ（＾▽＾）
     /// </summary>
-    /// <returns></returns>
     public static async Task Cleanup()
     {
+        // お前のアプリケーションに合わせて、［片付け］コードを追加していってくれだぜ（＾～＾）！
+
         MuzLogging.Cleanup(); // ロガーのクリーンアップ（＾～＾）
     }
 }

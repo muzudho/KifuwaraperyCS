@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using KifuwaraperyCS;
+using KifuwaraperyCS.Src;
 using KifuwaraperyCS.Src.Infrastructure.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -65,3 +65,11 @@ catch (Exception ex)
 {
     Console.WriteLine($"アプリが死んだ... ログも取れない、むずでょ泣く。{ex}");
 }
+finally
+{
+    Console.WriteLine("アプリが終了するぜ（＾～＾）！");
+    await MuzInfrastructureHelper.Cleanup();
+}
+
+// Program.cs を最後まで実行しても、必ずしもアプリケーションが終了するわけじゃないぜ（＾～＾）！
+// ［汎用ホスト］が動いている限りは、アプリケーションは終了しないぜ（＾～＾）！

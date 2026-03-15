@@ -40,7 +40,7 @@ internal static class MuzLogging
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.File(
-                "Logs/Default-.log",
+                "Logs/Bootstrap-.log",
                 rollingInterval: RollingInterval.Day,
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .CreateBootstrapLogger();  // ホストビルド前のログ用
@@ -106,7 +106,7 @@ internal static class MuzLogging
     {
         var options = new ConfigurationReaderOptions
         {
-            SectionName = "CustomLogging:Serilog"  // ← ここでセクションを指定！
+            SectionName = "LoggingExtensions:Serilog"  // ← ここでセクションを指定！
         };
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configurationMgr, options)  // ← 設定ファイルから［Serilog］セクション全部読み込む！
