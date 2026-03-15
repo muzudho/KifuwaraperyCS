@@ -23,4 +23,9 @@ internal interface IMuzLoggingService
     /// 大量のロガー。
     /// </summary>
     public ILogger Verbose { get; init; }
+
+    /// <summary>
+    /// 操作ロガー。
+    /// </summary>
+    public ILogger Operation { get; init; }
 }

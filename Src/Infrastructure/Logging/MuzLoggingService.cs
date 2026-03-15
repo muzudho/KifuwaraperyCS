@@ -20,6 +20,7 @@ internal class MuzLoggingService : IMuzLoggingService
         // ［ロガー］を分ける動作確認してみようぜ（＾～＾） ［カテゴリー名］でロガー作成（ここがポイント！）
         this.Others = loggerFactory.CreateLogger("MuzOthersLogger");    // ［その他のログ用］（＾～＾）
         this.Verbose = loggerFactory.CreateLogger("MuzVerboseLogger");  // ［大量のログ用］（＾～＾）
+        this.Operation = loggerFactory.CreateLogger("MuzOperationLogger");  // ［操作ログ用］（＾～＾）
     }
 
 
@@ -31,4 +32,6 @@ internal class MuzLoggingService : IMuzLoggingService
     public ILogger Others { get; init; }
 
     public ILogger Verbose { get; init; }
+
+    public ILogger Operation { get; init; }
 }
