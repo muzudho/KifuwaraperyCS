@@ -17,6 +17,13 @@ using Serilog.Settings.Configuration;
 /// </summary>
 internal static class MuzLogging
 {
+
+
+    // ========================================
+    // 窓口メソッド
+    // ========================================
+
+
     /// <summary>
     /// ［ホストビルド］の前に、諸々の設定をするぜ（＾～＾）
     /// </summary>
@@ -25,42 +32,35 @@ internal static class MuzLogging
         HostApplicationBuilder builder,
         Func<Microsoft.Extensions.Logging.ILogger, Task> onBootstrapLoggingEnabled)
     {
-        // Serilog のデフォルト状態を先にセットアップ（ホストビルド前に推奨）
+        // （ホストビルド前にログを出したいこともあるので、ホストビルド前に） Serilog のデフォルト状態をセットアップするぜ（＾▽＾）！
+        // 設定ファイルを読込む前だから、設定はここでするぜ（＾～＾）
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.File(
-                "Logs/App-.log",
+                "Logs/Default-.log",
                 rollingInterval: RollingInterval.Day,
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .CreateBootstrapLogger();  // ホストビルド中のログ用
+            .CreateBootstrapLogger();  // ホストビルド前のログ用
 
-        // ダウンロードしてきたロガーを、Microsoft の ILogger にブリッジ。これで ILogger<T> を使うと Serilog が使われるぜ（＾～＾）
+        // ［Serilog］パッケージをNuGetでダウンロードしてきているはず。そのロガーを、Microsoft の ILogger にブリッジ。これで ILogger<T> を使うと Serilog が使われるぜ（＾～＾）
         builder.Services.AddSerilog();
-        // 細かく制御したい場合は、ILoggerFactory を直接設定することもできる（＾～＾）！
-        //builder.Logging.ClearProviders();
-        //builder.Logging.AddSerilog(new LoggerConfiguration()
-        //    .MinimumLevel.Information()
-        //    .WriteTo.Console()
-        //    .WriteTo.File("Logs/App-.log", rollingInterval: RollingInterval.Day)
-        //    .CreateLogger());
 
-
-        // ★ここでマイクロソフトの ILogger を builder から直接作れる★
+        // とりあえずブリッジだけはしたんで、さっき設定したロガー１つをここで作成（＾～＾）
         var bootstrapLogger = builder.Logging.Services.BuildServiceProvider()
             .GetRequiredService<ILoggerFactory>()
-            .CreateLogger("LoggerBeforeHostBuild");   // カテゴリ名は自由（Program とかでもOK）
+            .CreateLogger("BootstrapLogger");   // カテゴリ名は自由（Program とかでもOK）
+
         try
         {
-            MuzLogging.SetupFromConfigurationFile(builder.Configuration); // ［設定ファイル］から［Serilog］の本設定。
-
             // ロギングはまだ DIサービスに登録できていないが、 bootstrapLogger だけは使えるようにしたぜ（＾～＾）
             await onBootstrapLoggingEnabled(bootstrapLogger);
         }
         catch (Exception ex)
         {
+            // せっかくブートストラップ・ロガーがあるんで、ここで例外をログに出しておくぜ（＾～＾）！
             bootstrapLogger.LogCritical(ex, "アプリが死んだ... むずでょ泣く");
         }
     }
@@ -73,19 +73,20 @@ internal static class MuzLogging
     public static async Task SetupAfterHostBuildAsync(
         ConfigurationManager configurationMgr,
         IHost host,
-        Func<Task> onLoggingEnabled)
+        Func<Task> onLoggingServiceEnabled)
     {
-        //// ［設定ファイル］から［Serilog］の本設定。
-        //MuzLogging.SetupFromConfigurationFile(configurationMgr);
+        // ［ホストビルド］後だから、［アプリケーション設定ファイル］のサービス設定も終わって、ファイルを読めるようになってるだろ（＾▽＾）
+        // ［設定ファイル］から［Serilog］の設定を読込むぜ（＾▽＾）！
+        MuzLogging.SetupFrom(configurationMgr);
 
-        // ［ホストビルド］の後なので、ここから、以下のようにして、ロガー（ILogger）を使えるようになったぜ（＾▽＾）！
+        // ここから、以下のようにして、ロガー（ILogger）を使えるようになったぜ（＾▽＾）！
         //var logger = host.Services.GetRequiredService<ILogger<Program>>();
-        await onLoggingEnabled();
+        await onLoggingServiceEnabled();
     }
 
 
     /// <summary>
-    /// アプリケーションのログをここで閉じていいのか（＾～＾）？
+    /// アプリケーションの終了前に呼び出してくれだぜ（＾～＾）
     /// </summary>
     public static void Cleanup()
     {
@@ -93,17 +94,22 @@ internal static class MuzLogging
     }
 
 
+    // ========================================
+    // 内部メソッド
+    // ========================================
+
+
     /// <summary>
     /// ［設定ファイル］からロガーの設定を行う。
     /// </summary>
-    public static void SetupFromConfigurationFile(ConfigurationManager configurationMgr)
+    private static void SetupFrom(ConfigurationManager configurationMgr)
     {
         var options = new ConfigurationReaderOptions
         {
             SectionName = "CustomLogging:Serilog"  // ← ここでセクションを指定！
         };
         Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configurationMgr, options)  // ← これで Serilog セクション全部読み込む！
+            .ReadFrom.Configuration(configurationMgr, options)  // ← 設定ファイルから［Serilog］セクション全部読み込む！
             .Enrich.FromLogContext()  // 任意: 便利な enricher
             .CreateLogger();
     }

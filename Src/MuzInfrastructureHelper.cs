@@ -22,7 +22,7 @@ internal static class MuzInfrastructureHelper
         await MuzLogging.SetupAfterHostBuildAsync(
             configurationMgr: builder.Configuration,
             host: host,
-            onLoggingEnabled: async () =>
+            onLoggingServiceEnabled: async () =>
             {
                 // ここから、以下のようにして、ロガー（ILogger）を使えるようになったぜ（＾▽＾）！
                 //var logger = host.Services.GetRequiredService<ILogger<Program>>();
