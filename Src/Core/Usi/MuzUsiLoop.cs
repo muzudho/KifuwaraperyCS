@@ -39,10 +39,8 @@ internal static class MuzUsiLoop
             if (commandName == "quit") break;
             if (commandName == "usi")
             {
-                // TODO: USIプロトコルのバージョンを返すぜ（＾▽＾）
-                var message = $"id name {appSettings.ShogiEngineName}\nid author {appSettings.ShogiEngineAuthor}\nusiok\n";
-                Console.Write(message);
-                loggingSvc.Operation.LogInformation(message);
+                // 将棋の思考エンジンの名前と開発者名を返すぜ（＾▽＾）
+                loggingSvc.USIProtocol.LogInformation($"id name {appSettings.ShogiEngineName}\nid author {appSettings.ShogiEngineAuthor}\nusiok\n");
             }
 
             // 返り値は空文字列ではないぜ（＾～＾）

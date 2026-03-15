@@ -28,4 +28,9 @@ internal interface IMuzLoggingService
     /// 操作ロガー。
     /// </summary>
     public ILogger Operation { get; init; }
+
+    /// <summary>
+    /// USIプロトコルのロガー。
+    /// </summary>
+    public ILogger USIProtocol { get; init; }
 }
