@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using KifuwaraperyCS.Src;
 using KifuwaraperyCS.Src.Infrastructure.Configuration;
+using KifuwaraperyCS.Src.Infrastructure.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -18,14 +19,19 @@ try
         {
             // ここからビルドされた［汎用ホスト］（host）が使えるぜ（＾▽＾）！
 
-            // ［設定ファイル］の動作確認してみようぜ（＾～＾）
+            // ［アプリケーション設定ファイル］を動作確認してみようぜ（＾～＾）
             var appSettings = host.Services.GetRequiredService<IOptions<MuzAppSettings>>().Value;
             Console.WriteLine($"AppName: {appSettings.AppName}");
             Console.WriteLine($"ShogiEngineName: {appSettings.ShogiEngineName}");
 
-            // ［ロガー］の動作確認してみようぜ（＾～＾）
+            // ［ロガー］を動作確認してみようぜ（＾～＾）
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("ログを書き込むぜ～（＾～＾）！");
+
+            // ［ロガー別のログ］を動作確認してみようぜ（＾～＾）
+            var loggingSvc = host.Services.GetRequiredService<IMuzLoggingService>();
+            loggingSvc.Others.LogInformation("その他のログだぜ（＾～＾）");
+            loggingSvc.Verbose.LogInformation("大量のログだぜ（＾～＾）");
 
             // または IHostedService で長時間動かすアプリなら
             // await host.RunAsync();

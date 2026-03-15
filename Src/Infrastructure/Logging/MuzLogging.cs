@@ -53,6 +53,9 @@ internal static class MuzLogging
             .GetRequiredService<ILoggerFactory>()
             .CreateLogger("BootstrapLogger");   // カテゴリ名は自由（Program とかでもOK）
 
+        // ［複数のロガーを使い分けるサービス］を DI注入するぜ（＾～＾）
+        builder.Services.AddSingleton<IMuzLoggingService, MuzLoggingService>();
+
         try
         {
             // ロギングはまだ DIサービスに登録できていないが、 bootstrapLogger だけは使えるようにしたぜ（＾～＾）
