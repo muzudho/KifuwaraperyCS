@@ -90,7 +90,7 @@ internal static class MuzUsiLoop
 
     public static string GetInput(IMuzLoggingService loggingSvc)
     {
-        Console.Write("コマンドを入力: ");
+        //Console.Write("コマンドを入力: ");
 
         string input;
 
@@ -116,7 +116,7 @@ internal static class MuzUsiLoop
     /// <param name="loggingSvc"></param>
     public static void SendOutput(string message, IMuzLoggingService loggingSvc)
     {
-        Console.WriteLine(message);
+        Console.Write(message); // 改行はもう付いてるから、ここでは付けないぜ（＾～＾）！
         loggingSvc.USIProtocol.LogInformation(message);
     }
 }

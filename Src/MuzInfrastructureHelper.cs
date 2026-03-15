@@ -55,7 +55,7 @@ internal static class MuzInfrastructureHelper
             onBootstrapLoggingEnabled: async (bootstrapLogger) =>
             {
                 // ここから `bootstrapLogger` を使った［ロギング］できる（＾～＾）！
-                bootstrapLogger.LogInformation("ホストビルド前だが、ブートストラップ・ログは出せるぜ（＾～＾）！");
+                //bootstrapLogger.LogInformation("ホストビルド前だが、ブートストラップ・ログは出せるぜ（＾～＾）！");
             });
     }
 
