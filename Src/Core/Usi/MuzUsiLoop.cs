@@ -74,6 +74,15 @@ internal static class MuzUsiLoop
             // 以下、独自実装
             // ----------------------------------------
             // ----------------------------------------
+            // 単体テスト　＞　両駒台の持ち駒の枚数
+            // ----------------------------------------
+            else if (commandName == "test-hand-stand-collection")
+            {
+                SendOutput($"持ち駒の表示テスト = {MuzHandStandCollection.FromPieces(
+                    bPawn: 17, bLance: 2, bKnight: 3, bSilver: 4, bGold: 1, bBishop: 2, bRook: 1,
+                    wPawn: 16, wLance: 1, wKnight: 2, wSilver: 3, wGold: 4, wBishop: 1, wRook: 2).ToString()}\n", loggingSvc);
+            }
+            // ----------------------------------------
             // 単体テスト　＞　手番
             // ----------------------------------------
             else if (commandName == "test-turn")
