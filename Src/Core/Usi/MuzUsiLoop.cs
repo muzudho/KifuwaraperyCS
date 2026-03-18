@@ -95,9 +95,10 @@ internal static class MuzUsiLoop
             {
 
             }
-            else if (commandName == "test-file")
+            else if (commandName == "test-suji")
             {
-
+                SendOutput($"［左右反転］ 1 = {MuzSujiHelper.Inverse(MuzSujiType.Suji1)}\n", loggingSvc);
+                SendOutput($"［左右反転］ 5 = {MuzSujiHelper.Inverse(MuzSujiType.Suji5)}\n", loggingSvc);
             }
             // ----------------------------------------
             // 単体テスト　＞　両駒台の持ち駒の枚数
