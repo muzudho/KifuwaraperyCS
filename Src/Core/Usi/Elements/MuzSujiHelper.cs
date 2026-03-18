@@ -3,7 +3,7 @@
 /// <summary>
 /// 筋の操作。
 /// </summary>
-internal static class MuzFileHelper
+internal static class MuzSujiHelper
 {
 
 
@@ -12,14 +12,14 @@ internal static class MuzFileHelper
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static MuzFileType Inverse(MuzFileType file) => (MuzFileType)(MuzFileType.SujiNum - 1 - file);
+    public static MuzSujiType Inverse(MuzSujiType file) => (MuzSujiType)(MuzSujiType.SujiNum - 1 - file);
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static bool ContainsOf(MuzFileType file) => (0 <= file) && (file < MuzFileType.SujiNum);
+    public static bool ContainsOf(MuzSujiType file) => (0 <= file) && (file < MuzSujiType.SujiNum);
 
     /*
     /// <summary>
