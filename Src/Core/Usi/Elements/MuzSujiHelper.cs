@@ -10,47 +10,46 @@ internal static class MuzSujiHelper
     /// <summary>
     /// 左右変換
     /// </summary>
-    /// <param name="file"></param>
+    /// <param name="suji">筋</param>
     /// <returns></returns>
-    public static MuzSujiType Inverse(MuzSujiType file) => (MuzSujiType)(MuzSujiType.SujiNum - 1 - file);
+    public static MuzSujiType Inverse(MuzSujiType suji) => (MuzSujiType)(MuzSujiType.SujiNum - 1 - suji);
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="file"></param>
+    /// <param name="suji">筋</param>
     /// <returns></returns>
-    public static bool ContainsOf(MuzSujiType file) => (0 <= file) && (file < MuzSujiType.SujiNum);
-
-    /*
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="f"></param>
-    /// <returns></returns>
-    static inline char TO_CHAR_USI(const File f) { return '1' + f; }
+    public static bool ContainsOf(MuzSujiType suji) => (0 <= suji) && (suji < MuzSujiType.SujiNum);
 
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="f"></param>
+    /// <param name="suji">筋</param>
     /// <returns></returns>
-    static inline char TO_CHAR_CSA(const File f) { return '1' + f; }
+    public static char ToUSIChar(MuzSujiType suji) => (char)('1' + suji);
 
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="c"></param>
+    /// <param name="suji">筋</param>
     /// <returns></returns>
-    static inline File FROM_CHAR_CSA(const char c) { return static_cast<File>(c - '1'); }
+    public static char ToCSAChar(MuzSujiType suji) => (char)('1' + suji);
 
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="c"></param>
+    /// <param name="ch">文字</param>
     /// <returns></returns>
-    static inline File FROM_CHAR_USI(const char c) { return static_cast<File>(c - '1'); }
-    */
+    public static MuzSujiType FromCSASuji(char ch) => (MuzSujiType)(ch - '1');
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ch">文字</param>
+    /// <returns></returns>
+    public static MuzSujiType FromUSIChar(char ch) => (MuzSujiType)(ch - '1');
 }
