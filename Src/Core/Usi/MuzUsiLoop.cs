@@ -97,8 +97,12 @@ internal static class MuzUsiLoop
             }
             else if (commandName == "test-suji")
             {
-                SendOutput($"［左右反転］ 1 = {MuzSujiHelper.Inverse(MuzSujiType.Suji1)}\n", loggingSvc);
-                SendOutput($"［左右反転］ 5 = {MuzSujiHelper.Inverse(MuzSujiType.Suji5)}\n", loggingSvc);
+#if !DEBUG
+                SendOutput("このテストはデバッグビルドでのみ実行されます（＾～＾）\n", loggingSvc);
+#endif
+                // 問題なければ何も表示されません。
+                DebugAssert(title: "左右反転", expected: MuzSujiType.Suji9, actual: MuzSujiHelper.Inverse(MuzSujiType.Suji1), loggingSvc);
+                DebugAssert(title: "左右反転", expected: MuzSujiType.Suji5, actual: MuzSujiHelper.Inverse(MuzSujiType.Suji5), loggingSvc);
             }
             // ----------------------------------------
             // 単体テスト　＞　両駒台の持ち駒の枚数
@@ -174,5 +178,17 @@ internal static class MuzUsiLoop
     {
         Console.Write(message); // 改行はもう付いてるから、ここでは付けないぜ（＾～＾）！
         loggingSvc.USIProtocol.LogInformation(message);
+    }
+
+
+    [Conditional("DEBUG")]
+    public static void DebugAssert<T>(string title, T expected, T actual, IMuzLoggingService loggingSvc)
+    {
+        if (!object.Equals(expected, actual))
+        {
+            var msg = $"Fail　{title}　期待値: {expected}, 実際の値: {actual}\n";
+            SendOutput(msg, loggingSvc);
+            //Debug.Assert(false, msg);
+        }
     }
 }
