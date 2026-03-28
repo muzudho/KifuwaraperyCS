@@ -1,4 +1,4 @@
-﻿namespace KifuwarabeCSharp.Core.Usi.Elements;
+﻿namespace KifuwarabeCSharp.Core.Usi.Models.Position;
 /// <summary>
 ///     <pre>
 /// 両駒台の持ち駒の枚数だぜ（＾～＾）！
@@ -17,7 +17,7 @@
 /// 
 ///     </pre>
 /// </summary>
-internal class MuzHandStandCollection
+internal class MuzHandStandCollectionModel
 {
 
 
@@ -26,7 +26,7 @@ internal class MuzHandStandCollection
     // ========================================
 
 
-    public static MuzHandStandCollection FromPieces(
+    public static MuzHandStandCollectionModel FromPieces(
         byte bPawn,
         byte bLance,
         byte bKnight,
@@ -42,7 +42,7 @@ internal class MuzHandStandCollection
         byte wBishop,
         byte wRook)
     {
-        return new MuzHandStandCollection(
+        return new MuzHandStandCollectionModel(
             bitField: ((ulong)bPawn) +
             ((ulong)bLance << 5) +
             ((ulong)bKnight << 8) +
@@ -60,7 +60,7 @@ internal class MuzHandStandCollection
     }
 
 
-    public MuzHandStandCollection(ulong bitField)
+    public MuzHandStandCollectionModel(ulong bitField)
     {
         this.BitField = bitField;
     }

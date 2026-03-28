@@ -5,7 +5,7 @@ using KifuwarabeCSharp.Models;
 internal static class MuzPositionView
 {
     public static string GetPositionViewString(
-        MuzCoreReadonly app)
+        MuzCoreReadonly core)
     {
         return $@"[次は 1 手目 / 下の番 / 反復 0 回目]
 
