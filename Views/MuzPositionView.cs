@@ -8,6 +8,9 @@ internal static class MuzPositionView
 {
     public static string GetPositionViewString()
     {
-        return $"";
+        return $@"
+ 飛
++--+--
+";
     }
 }

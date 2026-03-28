@@ -52,7 +52,7 @@ try
                         // ----------------------------------------
                         case "pos":
                             var text = MuzPositionView.GetPositionViewString();
-                            MuzUsiLoop.SendOutput(text, loggingSvc);
+                            MuzUsiLoop.SendOutput($"{text}\n", loggingSvc);
                             break;
 
                         // ----------------------------------------
