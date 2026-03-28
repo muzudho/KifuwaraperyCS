@@ -5,13 +5,13 @@
 
 ## お前はまずここを読め
 
-* [📄KifuwaraperyCS/Docs/1_界隈知識.md](./Docs/1_界隈知識.md) - ［コンピューター将棋］界隈の前提知識（＾～＾）
+* [📄KifuwarabeCSharp/Docs/1_界隈知識.md](./Docs/1_界隈知識.md) - ［コンピューター将棋］界隈の前提知識（＾～＾）
 
 
 ## 親切なフォルダー構成の案内
 
 
-* 📁 KifuwaraperyCS
+* 📁 KifuwarabeCSharp
 	* [📁bin](./bin) - ビルドしてできたファイル置き場（＾～＾）
 		* [📁Debug/net10.0/Logs] - デバッグビルドのログ置き場（＾～＾）
 	* [📁Docs](./Docs) - 細々とした説明書（ドキュメント）置き場（＾～＾）
