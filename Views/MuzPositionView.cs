@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Views;
+﻿namespace KifuwarabeCSharp.Views;
 
 using System;
 using System.Collections.Generic;

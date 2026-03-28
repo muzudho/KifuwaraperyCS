@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Tests;
+﻿namespace KifuwarabeCSharp.Tests;
 
 using Xunit;
 

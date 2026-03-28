@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Infrastructure.Logging;
+﻿namespace KifuwarabeCSharp.Infrastructure.Logging;
 
 using Microsoft.Extensions.Logging;
 

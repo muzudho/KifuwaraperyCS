@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Infrastructure.Configuration;
+﻿namespace KifuwarabeCSharp.Infrastructure.Configuration;
 
 /// <summary>
 ///     <pre>

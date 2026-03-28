@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Core.Usi.Elements;
+﻿namespace KifuwarabeCSharp.Core.Usi.Elements;
 /// <summary>
 ///     <pre>
 /// 両駒台の持ち駒の枚数だぜ（＾～＾）！
