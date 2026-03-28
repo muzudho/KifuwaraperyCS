@@ -1,12 +1,11 @@
 ﻿namespace KifuwarabeCSharp.Views;
 
-using System;
-using System.Collections.Generic;
-using System.Text;
+using KifuwarabeCSharp.Models;
 
 internal static class MuzPositionView
 {
-    public static string GetPositionViewString()
+    public static string GetPositionViewString(
+        MuzCoreReadonly app)
     {
         return $@"[次は 1 手目 / 下の番 / 反復 0 回目]
 

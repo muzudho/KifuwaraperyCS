@@ -3,9 +3,9 @@
 using KifuwarabeCSharp.Core.Usi.Models;
 
 /// <summary>
-/// アプリケーションの全部のモデルだぜ（＾～＾）！
+/// 読取専用のコアだぜ（＾～＾）！
 /// </summary>
-internal class MuzApplicationModel
+internal class MuzCoreReadonly
 {
 
 
@@ -14,10 +14,10 @@ internal class MuzApplicationModel
     // ========================================
 
 
-    internal MuzApplicationModel(
-        MuzPositionModel position)
+    internal MuzCoreReadonly(
+        IMuzPositionReadonly pos)
     {
-        this.Position = position;
+        this.Position = pos;
     }
 
 
@@ -26,5 +26,5 @@ internal class MuzApplicationModel
     // ========================================
 
 
-    internal MuzPositionModel Position { get; init; } = default!;
+    internal IMuzPositionReadonly Position { get; init; } = default!;
 }

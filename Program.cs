@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using KifuwarabeCSharp;
 using KifuwarabeCSharp.Core.Usi;
+using KifuwarabeCSharp.Core.Usi.Models;
 using KifuwarabeCSharp.Infrastructure.Configuration;
 using KifuwarabeCSharp.Infrastructure.Logging;
+using KifuwarabeCSharp.Models;
 using KifuwarabeCSharp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -42,6 +44,8 @@ try
                 loggingSvc,
                 onExternalCommand: async (commandName, argsStr) =>
                 {
+                    IMuzPositionReadonly pos = new MuzPositionModel();
+
                     switch (commandName)
                     {
                         // ----------------------------------------
@@ -51,7 +55,7 @@ try
                         // 局面の表示
                         // ----------------------------------------
                         case "pos":
-                            var text = MuzPositionView.GetPositionViewString();
+                            var text = MuzPositionView.GetPositionViewString(new MuzCoreReadonly(pos));
                             MuzUsiLoop.SendOutput($"{text}\n", loggingSvc);
                             break;
 
