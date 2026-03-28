@@ -1,6 +1,7 @@
 ﻿namespace KifuwarabeCSharp.Core.Usi;
 
 using KifuwarabeCSharp.Core.Usi.Elements;
+using KifuwarabeCSharp.Core.Usi.Models;
 using KifuwarabeCSharp.Infrastructure.Configuration;
 using KifuwarabeCSharp.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
@@ -19,8 +20,10 @@ internal static class MuzUsiLoop
     public static async Task RunAsync(
         MuzAppSettings appSettings,
         IMuzLoggingService loggingSvc,
-        Func<string, string, Task> onExternalCommand)
+        Func<IMuzPositionReadonly, string, string, Task> onExternalCommand)
     {
+        var pos = new MuzPositionModel();
+
         // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
         // 返り値は空文字列ではないぜ（＾～＾）
         var input = GetInput(loggingSvc);
@@ -79,7 +82,7 @@ internal static class MuzUsiLoop
             // ----------------------------------------
             else if (commandName == "pos")
             {
-                await onExternalCommand(commandName, rest);
+                await onExternalCommand(pos, commandName, rest);
             }
             // ----------------------------------------
             // 盤上の先後付き駒種類

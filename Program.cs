@@ -42,10 +42,8 @@ try
             await MuzUsiLoop.RunAsync(
                 appSettings,
                 loggingSvc,
-                onExternalCommand: async (commandName, argsStr) =>
+                onExternalCommand: async (pos, commandName, argsStr) =>
                 {
-                    IMuzPositionReadonly pos = new MuzPositionModel();
-
                     switch (commandName)
                     {
                         // ----------------------------------------
