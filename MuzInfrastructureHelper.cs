@@ -1,7 +1,7 @@
-﻿namespace KifuwaraperyCS.Src;
+﻿namespace KifuwaraperyCS;
 
-using KifuwaraperyCS.Src.Infrastructure.Configuration;
-using KifuwaraperyCS.Src.Infrastructure.Logging;
+using KifuwaraperyCS.Infrastructure.Configuration;
+using KifuwaraperyCS.Infrastructure.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Src.Core.Usi.Elements;
+﻿namespace KifuwaraperyCS.Core.Usi.Elements;
 
 /// <summary>
 ///     <pre>
@@ -16,31 +16,36 @@
 ///     A9, A8, A7, A6, A5, A4, A3, A2, A1,		// ９筋目
 ///     </pre>
 /// </summary>
-internal enum MuzDanType
+internal enum MuzSujiType
 {
     /// <summary>
     ///     <pre>
-    /// 平手黒番から見て、１段目（上端）。
+    /// 平手黒番から見て、１筋目（左端）。
     /// 
-    ///     - Apery では `Rank9`。
+    ///     - Apery では `FileI`。
     ///     </pre>
     /// </summary>
-    Dan1,
+    Suji1 = 0,
 
-    Dan2, Dan3, Dan4, Dan5, Dan6, Dan7, Dan8,
+    Suji2, Suji3, Suji4, Suji5, Suji6, Suji7, Suji8,
 
     /// <summary>
     ///     <pre>
-    /// 平手黒番から見て、９段目（下端）。
+    /// 平手黒番から見て、９筋目（右端）。
     /// 
-    ///     - Apery では `Rank1`。
+    ///     - Apery では `FileA`。
     ///     </pre>
     /// </summary>
-    Dan9,
+    Suji9,
 
     /// <summary>
     /// 列挙型の終端
     /// </summary>
-    DanNum,
-    None = DanNum,
+    SujiNum,
+    None = SujiNum,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    FileNoLeftNum = Suji6
 }

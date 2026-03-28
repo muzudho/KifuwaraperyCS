@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using KifuwaraperyCS.Src;
-using KifuwaraperyCS.Src.Core.Usi;
-using KifuwaraperyCS.Src.Infrastructure.Configuration;
-using KifuwaraperyCS.Src.Infrastructure.Logging;
+using KifuwaraperyCS;
+using KifuwaraperyCS.Core.Usi;
+using KifuwaraperyCS.Infrastructure.Configuration;
+using KifuwaraperyCS.Infrastructure.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 

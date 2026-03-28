@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Src.Core.Usi.Elements;
+﻿namespace KifuwaraperyCS.Core.Usi.Elements;
 
 /// <summary>
 /// 黒番か白番かを表すぜ（＾▽＾）！

@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Src.Core.Usi.Elements;
+﻿namespace KifuwaraperyCS.Core.Usi.Elements;
 
 /// <summary>
 ///		<pre>

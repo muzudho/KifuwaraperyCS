@@ -1,8 +1,8 @@
-﻿namespace KifuwaraperyCS.Src.Core.Usi;
+﻿namespace KifuwaraperyCS.Core.Usi;
 
-using KifuwaraperyCS.Src.Core.Usi.Elements;
-using KifuwaraperyCS.Src.Infrastructure.Configuration;
-using KifuwaraperyCS.Src.Infrastructure.Logging;
+using KifuwaraperyCS.Core.Usi.Elements;
+using KifuwaraperyCS.Infrastructure.Configuration;
+using KifuwaraperyCS.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;

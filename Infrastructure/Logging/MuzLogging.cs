@@ -1,4 +1,4 @@
-﻿namespace KifuwaraperyCS.Src.Infrastructure.Logging;
+﻿namespace KifuwaraperyCS.Infrastructure.Logging;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
