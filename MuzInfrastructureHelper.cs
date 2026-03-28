@@ -3,7 +3,6 @@
 using KifuwaraperyCS.Infrastructure.Configuration;
 using KifuwaraperyCS.Infrastructure.Logging;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 
 /// <summary>

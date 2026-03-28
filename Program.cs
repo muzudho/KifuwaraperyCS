@@ -3,6 +3,7 @@ using KifuwaraperyCS;
 using KifuwaraperyCS.Core.Usi;
 using KifuwaraperyCS.Infrastructure.Configuration;
 using KifuwaraperyCS.Infrastructure.Logging;
+using KifuwaraperyCS.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -36,7 +37,32 @@ try
             // または IHostedService で長時間動かすアプリなら
             // await host.RunAsync();
 
-            await MuzUsiLoop.RunAsync(appSettings, loggingSvc);
+            await MuzUsiLoop.RunAsync(
+                appSettings,
+                loggingSvc,
+                onExternalCommand: async (commandName, argsStr) =>
+                {
+                    switch (commandName)
+                    {
+                        // ----------------------------------------
+                        // 以下、独自実装
+                        // ----------------------------------------
+                        // ----------------------------------------
+                        // 局面の表示
+                        // ----------------------------------------
+                        case "pos":
+                            var text = MuzPositionView.GetPositionViewString();
+                            MuzUsiLoop.SendOutput(text, loggingSvc);
+                            break;
+
+                        // ----------------------------------------
+                        // 無いよ
+                        // ----------------------------------------
+                        default:
+                            MuzUsiLoop.SendOutput("そんなコマンド無い（＾～＾）\n", loggingSvc);
+                            break;
+                    }
+                });
 
             //Console.WriteLine("アプリ終了！ Enter押してね");
             //Console.ReadLine();

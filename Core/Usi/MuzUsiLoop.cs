@@ -18,7 +18,8 @@ internal static class MuzUsiLoop
 
     public static async Task RunAsync(
         MuzAppSettings appSettings,
-        IMuzLoggingService loggingSvc)
+        IMuzLoggingService loggingSvc,
+        Func<string, string, Task> onExternalCommand)
     {
         // TODO: アプリのメイン処理をここに書く（＾～＾）！ USIプロトコルの処理とか（＾～＾）！
         // 返り値は空文字列ではないぜ（＾～＾）
@@ -73,6 +74,13 @@ internal static class MuzUsiLoop
             // ----------------------------------------
             // 以下、独自実装
             // ----------------------------------------
+            // ----------------------------------------
+            // 局面の表示
+            // ----------------------------------------
+            else if (commandName == "pos")
+            {
+                await onExternalCommand(commandName, rest);
+            }
             // ----------------------------------------
             // 盤上の先後付き駒種類
             // ----------------------------------------
